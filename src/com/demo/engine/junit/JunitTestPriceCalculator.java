@@ -10,9 +10,16 @@ import org.junit.jupiter.api.Test;
 
 import com.demo.engine.util.PriceCalculator;
 
+/**
+ * Class containing different scenarios to test calculation by PriceCalculator
+ * class
+ * 
+ * @author mitaly
+ *
+ */
 class JunitTestPriceCalculator {
 	private static PriceCalculator calculator;
-	
+
 	@BeforeAll
 	public static void before() {
 		calculator = new PriceCalculator();
@@ -33,7 +40,7 @@ class JunitTestPriceCalculator {
 		assertEquals(280, calculator.calculateTotalPrice(testDataHaving_TwoAndNTypePromotion()));
 	}
 
-	Map<Character, Integer> testDataHavingNoPromotions() {
+	private Map<Character, Integer> testDataHavingNoPromotions() {
 		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
 		itemsToBuy.put('A', 1);
 		itemsToBuy.put('B', 1);
@@ -41,7 +48,7 @@ class JunitTestPriceCalculator {
 		return itemsToBuy;
 	}
 
-	Map<Character, Integer> testDataHaving_NTypePromotion() {
+	private Map<Character, Integer> testDataHaving_NTypePromotion() {
 		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
 		itemsToBuy.put('A', 5);
 		itemsToBuy.put('B', 5);
@@ -49,7 +56,7 @@ class JunitTestPriceCalculator {
 		return itemsToBuy;
 	}
 
-	Map<Character, Integer> testDataHaving_TwoAndNTypePromotion() {
+	private Map<Character, Integer> testDataHaving_TwoAndNTypePromotion() {
 		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
 		itemsToBuy.put('A', 3);
 		itemsToBuy.put('B', 5);

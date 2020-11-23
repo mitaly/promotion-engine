@@ -1,5 +1,10 @@
 package com.demo.engine.model;
 
+/**
+ * Promotion class representing - Buy 'N' items of 'A' for 'x' price 
+ * @author mitaly
+ *
+ */
 public class NItemsPromotion extends Promotion{
 	private Integer quantity;
 	

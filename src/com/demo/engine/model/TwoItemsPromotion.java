@@ -1,5 +1,10 @@
 package com.demo.engine.model;
 
+/**
+ * Promotion class representing - Buy 'A' and 'B' for 'x' price
+ * @author mitaly
+ *
+ */
 public class TwoItemsPromotion extends Promotion {
 	private Character secondItem;
 

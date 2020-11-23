@@ -1,5 +1,10 @@
 package com.demo.engine.model;
 
+/**
+ * Base class representing a Promotion
+ * @author mitaly
+ *
+ */
 public abstract class Promotion {
 	public Promotion(Integer price) {
 		super();
