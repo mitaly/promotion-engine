@@ -1,7 +1,12 @@
 package com.demo.engine.model;
 
 public abstract class Promotion {
-	private Integer price;
+	public Promotion(Integer price) {
+		super();
+		this.price = price;
+	}
+
+	protected Integer price;
 
 	public Integer getPrice() {
 		return price;

@@ -1,23 +1,26 @@
 package com.demo.engine.model;
 
-import java.util.Set;
-
 public class TwoItemsPromotion extends Promotion {
-	private Set<Character> itemKeys;
+	private Character secondItem;
 
-	public Set<Character> getItemKeys() {
-		return itemKeys;
+	public TwoItemsPromotion(Integer price, Character secondItem) {
+		super(price);
+		this.secondItem = secondItem;
 	}
 
-	public void setItemKeys(Set<Character> itemKeys) {
-		this.itemKeys = itemKeys;
+	public Character getSecondItem() {
+		return secondItem;
+	}
+
+	public void setSecondItem(Character secondItem) {
+		this.secondItem = secondItem;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("TwoItemsPromotion [itemKeys=");
-		builder.append(itemKeys);
+		builder.append("TwoItemsPromotion [secondItem=");
+		builder.append(secondItem);
 		builder.append("]");
 		return builder.toString();
 	}
