@@ -13,14 +13,6 @@ public class EngineMain {
 	{
 		priceCalculator = new PriceCalculator();
 		
-//		itemsToBuy.put('A', 1);
-//		itemsToBuy.put('B', 1);
-//		itemsToBuy.put('C', 1);
-		
-//		itemsToBuy.put('A', 5);
-//		itemsToBuy.put('B', 5);
-//		itemsToBuy.put('C', 1);
-		
 		itemsToBuy.put('A', 3);
 		itemsToBuy.put('B', 5);
 		itemsToBuy.put('C', 1);

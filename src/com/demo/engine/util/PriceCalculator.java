@@ -25,8 +25,8 @@ public class PriceCalculator {
 
 	}
 
-	public Integer calculateTotalPrice(Map<Character, Integer> itemsToBuy) {
-		Integer totalAmount = 0;
+	public int calculateTotalPrice(Map<Character, Integer> itemsToBuy) {
+		int totalAmount = 0;
 		Set<Character> itemsBought = new HashSet<Character>();
 
 		for (Map.Entry<Character, Integer> entry : itemsToBuy.entrySet()) {
@@ -37,23 +37,9 @@ public class PriceCalculator {
 
 				Promotion promotion = promotions.get(key);
 				if (promotion instanceof NItemsPromotion) {
-					int promotionPrice = promotion.getPrice();
-					int promotionQuantity = ((NItemsPromotion) promotion).getQuantity();
-					totalAmount += (quantity / promotionQuantity) * promotionPrice;
-
-					totalAmount += (quantity % promotionQuantity) * actualPrice;
+					totalAmount += calculatePriceForNItemsPromotion(promotion, quantity, actualPrice);
 				} else if (promotion instanceof TwoItemsPromotion) {
-					Character secondItemKey = ((TwoItemsPromotion) promotion).getSecondItem();
-					Integer secondItemQuantity = itemsToBuy.get(secondItemKey);
-					if (secondItemQuantity != null) {
-						int minQuantity = Math.min(quantity, secondItemQuantity);
-						totalAmount += minQuantity * promotion.getPrice();
-						totalAmount += (quantity - minQuantity) * actualPrice;
-						totalAmount += (secondItemQuantity - minQuantity) * itemsWithPrices.get(secondItemKey);
-						itemsBought.add(secondItemKey);
-					} else {
-						totalAmount += quantity * actualPrice;
-					}
+					totalAmount += calculatePriceForTwoItemsPromotion(promotion, quantity, actualPrice, itemsToBuy, itemsBought);
 				} else {
 					totalAmount += actualPrice * quantity;
 				}
@@ -61,5 +47,32 @@ public class PriceCalculator {
 			}
 		}
 		return totalAmount;
+	}
+
+	private int calculatePriceForNItemsPromotion(Promotion promotion, int quantity, int actualPrice) {
+		int currentPrice = 0;
+		int promotionPrice = promotion.getPrice();
+		int promotionQuantity = ((NItemsPromotion) promotion).getQuantity();
+		currentPrice += (quantity / promotionQuantity) * promotionPrice;
+
+		currentPrice += (quantity % promotionQuantity) * actualPrice;
+		return currentPrice;
+	}
+
+	private int calculatePriceForTwoItemsPromotion(Promotion promotion, int quantity, int actualPrice,
+			Map<Character, Integer> itemsToBuy, Set<Character> itemsBought) {
+		int currentPrice = 0;
+		Character secondItemKey = ((TwoItemsPromotion) promotion).getSecondItem();
+		Integer secondItemQuantity = itemsToBuy.get(secondItemKey);
+		if (secondItemQuantity != null) {
+			int minQuantity = Math.min(quantity, secondItemQuantity);
+			currentPrice += minQuantity * promotion.getPrice();
+			currentPrice += (quantity - minQuantity) * actualPrice;
+			currentPrice += (secondItemQuantity - minQuantity) * itemsWithPrices.get(secondItemKey);
+			itemsBought.add(secondItemKey);
+		} else {
+			currentPrice += quantity * actualPrice;
+		}
+		return currentPrice;
 	}
 }
