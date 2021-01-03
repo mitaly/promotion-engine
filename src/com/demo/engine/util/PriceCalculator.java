@@ -5,9 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.demo.engine.model.Item;
 import com.demo.engine.model.NItemsPromotion;
 import com.demo.engine.model.Promotion;
 import com.demo.engine.model.TwoItemsPromotion;
+import com.demo.engine.strategy.NItemsPromotionStrategy;
+import com.demo.engine.strategy.PromotionStrategy;
+import com.demo.engine.strategy.TwoItemsPromotionStrategy;
 
 /**
  * Class for applying promotions and calculating the final price of items to be
@@ -18,21 +22,21 @@ import com.demo.engine.model.TwoItemsPromotion;
  */
 public class PriceCalculator {
 	// Data structure holding item keys with their prices
-	private Map<Character, Integer> itemPrices = new HashMap<Character, Integer>();
+	private Map<Character, Item> dbItems = new HashMap<Character, Item>();
 	// Data structure holding item keys with the promotion available on them
 	private Map<Character, Promotion> promotions = new HashMap<Character, Promotion>();
 
 	// initializing with sample data
 	{
-		itemPrices.put('A', 50);
-		itemPrices.put('B', 30);
-		itemPrices.put('C', 20);
-		itemPrices.put('D', 15);
+		dbItems.put('A', new Item('A', 50));
+		dbItems.put('B', new Item('B', 30));
+		dbItems.put('C', new Item('C', 20));
+		dbItems.put('D', new Item('D', 15));
 
 		promotions.put('A', new NItemsPromotion(3, 130));
 		promotions.put('B', new NItemsPromotion(2, 45));
-		promotions.put('C', new TwoItemsPromotion(30, 'D'));
-		promotions.put('D', new TwoItemsPromotion(30, 'C'));
+		promotions.put('C', new TwoItemsPromotion(30, new Item('D')));
+		promotions.put('D', new TwoItemsPromotion(30, new Item('C')));
 
 	}
 
@@ -42,24 +46,23 @@ public class PriceCalculator {
 	 * @param itemsToBuy
 	 * @return
 	 */
-	public int calculateTotalPrice(Map<Character, Integer> itemsToBuy) {
+	public int calculateTotalPrice(Set<Item> itemsToBuy) {
 		int totalAmount = 0;
 		Set<Character> itemsBought = new HashSet<Character>();
 
-		for (Map.Entry<Character, Integer> entry : itemsToBuy.entrySet()) {
-			Character key = entry.getKey();
+		for (Item item : itemsToBuy) {
+			char key = item.getId();
 			if (!itemsBought.contains(key)) {
-				Integer quantity = entry.getValue();
-				Integer actualPrice = itemPrices.get(key);
-
 				Promotion promotion = promotions.get(key);
+
 				if (promotion instanceof NItemsPromotion) {
-					totalAmount += calculatePriceForNItemsPromotion(promotion, quantity, actualPrice);
+					PromotionStrategy strategy = new NItemsPromotionStrategy(dbItems);
+					totalAmount += strategy.applyPromotion(item, promotion);
 				} else if (promotion instanceof TwoItemsPromotion) {
-					totalAmount += calculatePriceForTwoItemsPromotion(promotion, quantity, actualPrice, itemsToBuy,
-							itemsBought);
+					PromotionStrategy strategy = new TwoItemsPromotionStrategy(dbItems, itemsBought);
+					totalAmount += strategy.applyPromotion(item, promotion);
 				} else {
-					totalAmount += actualPrice * quantity;
+					totalAmount += dbItems.get(key).getPrice() * item.getQuantity();
 				}
 				itemsBought.add(key);
 			}
@@ -67,48 +70,4 @@ public class PriceCalculator {
 		return totalAmount;
 	}
 
-	/**
-	 * calculates the price for NItems promotion type
-	 * 
-	 * @param promotion
-	 * @param quantity
-	 * @param actualPrice
-	 * @return
-	 */
-	private int calculatePriceForNItemsPromotion(Promotion promotion, int quantity, int actualPrice) {
-		int currentPrice = 0;
-		int promotionPrice = promotion.getPrice();
-		int promotionQuantity = ((NItemsPromotion) promotion).getQuantity();
-		currentPrice += (quantity / promotionQuantity) * promotionPrice;
-
-		currentPrice += (quantity % promotionQuantity) * actualPrice;
-		return currentPrice;
-	}
-
-	/**
-	 * calculates the price for TwoItems promotion type
-	 * 
-	 * @param promotion
-	 * @param quantity
-	 * @param actualPrice
-	 * @param itemsToBuy
-	 * @param itemsBought
-	 * @return
-	 */
-	private int calculatePriceForTwoItemsPromotion(Promotion promotion, int quantity, int actualPrice,
-			Map<Character, Integer> itemsToBuy, Set<Character> itemsBought) {
-		int currentPrice = 0;
-		Character secondItemKey = ((TwoItemsPromotion) promotion).getSecondItem();
-		Integer secondItemQuantity = itemsToBuy.get(secondItemKey);
-		if (secondItemQuantity != null) {
-			int minQuantity = Math.min(quantity, secondItemQuantity);
-			currentPrice += minQuantity * promotion.getPrice();
-			currentPrice += (quantity - minQuantity) * actualPrice;
-			currentPrice += (secondItemQuantity - minQuantity) * itemPrices.get(secondItemKey);
-			itemsBought.add(secondItemKey);
-		} else {
-			currentPrice += quantity * actualPrice;
-		}
-		return currentPrice;
-	}
 }

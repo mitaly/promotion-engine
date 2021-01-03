@@ -6,18 +6,18 @@ package com.demo.engine.model;
  *
  */
 public class TwoItemsPromotion extends Promotion {
-	private Character secondItem;
+	private Item secondItem;
 
-	public TwoItemsPromotion(Integer price, Character secondItem) {
+	public TwoItemsPromotion(Integer price, Item secondItem) {
 		super(price);
 		this.secondItem = secondItem;
 	}
 
-	public Character getSecondItem() {
+	public Item getSecondItem() {
 		return secondItem;
 	}
 
-	public void setSecondItem(Character secondItem) {
+	public void setSecondItem(Item secondItem) {
 		this.secondItem = secondItem;
 	}
 

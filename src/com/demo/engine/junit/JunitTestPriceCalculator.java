@@ -2,12 +2,13 @@ package com.demo.engine.junit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.demo.engine.model.Item;
 import com.demo.engine.util.PriceCalculator;
 
 /**
@@ -40,28 +41,28 @@ class JunitTestPriceCalculator {
 		assertEquals(280, calculator.calculateTotalPrice(testDataHaving_TwoAndNTypePromotion()));
 	}
 
-	private Map<Character, Integer> testDataHavingNoPromotions() {
-		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
-		itemsToBuy.put('A', 1);
-		itemsToBuy.put('B', 1);
-		itemsToBuy.put('C', 1);
+	private Set<Item> testDataHavingNoPromotions() {
+		Set<Item> itemsToBuy = new HashSet<Item>();
+		itemsToBuy.add(new Item('A', 1));
+		itemsToBuy.add(new Item('B', 1));
+		itemsToBuy.add(new Item('C', 1));
 		return itemsToBuy;
 	}
 
-	private Map<Character, Integer> testDataHaving_NTypePromotion() {
-		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
-		itemsToBuy.put('A', 5);
-		itemsToBuy.put('B', 5);
-		itemsToBuy.put('C', 1);
+	private Set<Item> testDataHaving_NTypePromotion() {
+		Set<Item> itemsToBuy = new HashSet<Item>();
+		itemsToBuy.add(new Item('A', 5));
+		itemsToBuy.add(new Item('B', 5));
+		itemsToBuy.add(new Item('C', 1));
 		return itemsToBuy;
 	}
 
-	private Map<Character, Integer> testDataHaving_TwoAndNTypePromotion() {
-		Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
-		itemsToBuy.put('A', 3);
-		itemsToBuy.put('B', 5);
-		itemsToBuy.put('C', 1);
-		itemsToBuy.put('D', 1);
+	private Set<Item> testDataHaving_TwoAndNTypePromotion() {
+		Set<Item> itemsToBuy = new HashSet<Item>();
+		itemsToBuy.add(new Item('A', 3));
+		itemsToBuy.add(new Item('B', 5));
+		itemsToBuy.add(new Item('C', 1));
+		itemsToBuy.add(new Item('D', 1));
 		return itemsToBuy;
 	}
 }

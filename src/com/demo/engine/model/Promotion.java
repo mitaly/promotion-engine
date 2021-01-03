@@ -6,12 +6,13 @@ package com.demo.engine.model;
  *
  */
 public abstract class Promotion {
+	protected Item item;
+	protected Integer price;
+	
 	public Promotion(Integer price) {
 		super();
 		this.price = price;
 	}
-
-	protected Integer price;
 
 	public Integer getPrice() {
 		return price;
@@ -20,6 +21,4 @@ public abstract class Promotion {
 	public void setPrice(Integer price) {
 		this.price = price;
 	}
-	
-	
 }

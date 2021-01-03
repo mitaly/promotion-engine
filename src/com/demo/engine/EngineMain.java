@@ -1,23 +1,24 @@
 package com.demo.engine;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.demo.engine.model.Item;
 import com.demo.engine.util.PriceCalculator;
 
 public class EngineMain {
 	// Test data
-	private Map<Character, Integer> itemsToBuy = new HashMap<Character, Integer>();
+	private Set<Item> itemsToBuy = new HashSet<Item>();
 
 	private PriceCalculator priceCalculator;
 
 	{
 		priceCalculator = new PriceCalculator();
 
-		itemsToBuy.put('A', 3);
-		itemsToBuy.put('B', 5);
-		itemsToBuy.put('C', 1);
-		itemsToBuy.put('D', 1);
+		itemsToBuy.add(new Item('A', 3));
+		itemsToBuy.add(new Item('B', 5));
+		itemsToBuy.add(new Item('C', 1));
+		itemsToBuy.add(new Item('D', 1));
 	}
 
 	public static void main(String[] args) {
